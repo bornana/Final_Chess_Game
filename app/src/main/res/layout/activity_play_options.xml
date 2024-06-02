@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id = "@+id/relativeLayout"
+    android:background="@drawable/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Play_Options">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/KOLAK"
+        android:text="Chess"
+        android:textColor="@color/green"
+        android:textSize="100dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/play_with_bot"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="200dp"
+        android:background="@color/dark_green"
+        android:text="play against computer"
+        android:fontFamily="@font/KOLAK"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/pass_and_play"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="420dp"
+        android:background="@color/dark_green"
+        android:fontFamily="@font/KOLAK"
+        android:text="pass and play"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/exit"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="640dp"
+        android:background="@color/dark_green"
+        android:text="exit"
+        android:fontFamily="@font/KOLAK"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
