@@ -13,9 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/KOLAK"
-        android:text="Chess"
+        android:text="ChessBot"
         android:textColor="@color/green"
-        android:textSize="100dp"
+        android:textSize="60dp"
         android:textStyle="bold" />
 
     <Button

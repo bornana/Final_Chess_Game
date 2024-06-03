@@ -442,8 +442,17 @@ public class MainActivity extends AppCompatActivity {
             IsPromotable(piece, pieces);
             if((king1.IsCheckMated())){
                 Intent intent = new Intent(MainActivity.this, AndTheWinnerIs.class);
+                Intent prevIntent = new Intent();
+                intent.putExtra("username", prevIntent.getStringExtra("username"));
+                if(prevIntent.getBooleanExtra("is_bot", false)){
+                    intent.putExtra("is_bot", true);
+                }
+                else {
+                    intent.putExtra("is_bot", false);
+                }
                 if (king1.GetColor() == "black"){
                     intent.putExtra("Winner", "white");
+
                     startActivity(intent);
                 }
 

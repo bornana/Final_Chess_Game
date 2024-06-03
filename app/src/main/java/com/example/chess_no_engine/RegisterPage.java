@@ -16,15 +16,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterPage extends AppCompatActivity {
 
-    TextInputEditText editTextEmail, editTextPassword;
+    TextInputEditText editTextUsername, editTextPassword;
 
     Button signUp;
 
     TextView signIn;
 
+    FirebaseDatabase db;
+    DatabaseReference reference;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     @Override
@@ -32,7 +36,7 @@ public class RegisterPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_page);
 
-        editTextEmail = findViewById(R.id.email);
+        editTextUsername = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
         signIn = findViewById(R.id.sign_in);
         signUp = findViewById(R.id.sign_up);
@@ -40,7 +44,7 @@ public class RegisterPage extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RegisterPage.this, MainActivity.class);
+                Intent intent = new Intent(RegisterPage.this, IntroScreen.class);
                 startActivity(intent);
                 finish();
             }
@@ -50,7 +54,7 @@ public class RegisterPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String email, password;
-                email = String.valueOf(editTextEmail.getText());
+                email = String.valueOf(editTextUsername.getText());
                 password = String.valueOf(editTextPassword.getText());
 
                 if (TextUtils.isEmpty(email)){
@@ -62,12 +66,16 @@ public class RegisterPage extends AppCompatActivity {
                     return;
                 }
 
-                firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                Users user = new Users(editTextUsername.getText().toString(), editTextPassword.getText().toString(), 0, 0, 0);
+                db = FirebaseDatabase.getInstance();
+                reference = db.getReference("Users");
+                reference.child(editTextUsername.getText().toString()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                    public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(RegisterPage.this, "Registration Successfully", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(RegisterPage.this, Play_Options.class);
+                            intent.putExtra("username", editTextUsername.getText().toString());
                             startActivity(intent);
                             finish();
                         }
@@ -76,6 +84,7 @@ public class RegisterPage extends AppCompatActivity {
                         }
                     }
                 });
+
             }
 
         });

@@ -16,6 +16,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class IntroScreen extends AppCompatActivity {
 
@@ -24,7 +29,8 @@ public class IntroScreen extends AppCompatActivity {
     Button signIn;
 
     TextView signUp;
-
+    FirebaseDatabase db;
+    DatabaseReference reference;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     @Override
@@ -32,7 +38,7 @@ public class IntroScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro_screen);
 
-        editTextEmail = findViewById(R.id.email);
+        editTextEmail = findViewById(R.id.username);
         editTextPassword = findViewById(R.id.password);
         signIn = findViewById(R.id.sign_in);
         signUp = findViewById(R.id.sign_up);
@@ -61,6 +67,35 @@ public class IntroScreen extends AppCompatActivity {
                     Toast.makeText(IntroScreen.this, "Enter Password", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                db = FirebaseDatabase.getInstance();
+                reference = db.getReference("Users");
+                reference.child(email).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            String storedPassword = snapshot.child("password").getValue(String.class);
+                            if(!storedPassword.isEmpty() && storedPassword.equals(password)){
+                                Toast.makeText(IntroScreen.this, "Login Successful !", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(IntroScreen.this, Play_Options.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                            else {
+                                Toast.makeText(IntroScreen.this, "Authentication Failed !", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                        else {
+                            Toast.makeText(IntroScreen.this, "Authentication Failed !", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(IntroScreen.this, "Database error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
 
                 firebaseAuth.signInWithEmailAndPassword(email,password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
